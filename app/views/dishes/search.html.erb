@@ -9,25 +9,8 @@
 <h1>All dishes</h1>
 <div>
   <% if @dishes.present? %>
-  <table border="5px" cellpadding="5px" cellspacing="5px">
-    <th>Name</th>
-    <th>Description</th>
-    <th>Price</th>
-    <th>Edit</th>
-    <th>Details</th>
-    <th>Delete</th>
   <% @dishes.each do |dish| %>
-      <tr>
-     <td><h4><%= dish.name %></h4></td>
-     <td><h4><%= dish.description %></h4></td>
-     <td><h4><%= dish.price %></h4></td>
-     <td><h4><%= link_to 'Edit', edit_restaurant_dish_path(@restaurant,dish) %></h4></td>
-     <td><h4><%= link_to 'Detail', restaurant_dish_path(@restaurant,dish) %></h4></td>
-      <td><h4><%= button_to "Delete", restaurant_dish_path(@restaurant,dish), method: :delete, data: { turbo_confirm: "Are you sure?" } %></h4>
-</td>
-
-    </tr>
-  
+  <h4>dish name : <%= dish.name %></h4>
   <% end %>
   <% else %>
   <h4>No dish found</h4>

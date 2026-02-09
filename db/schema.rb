@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_08_053832) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_09_104101) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -63,6 +63,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_08_053832) do
     t.index ["restaurant_id"], name: "index_orders_on_restaurant_id"
   end
 
+  create_table "ratings", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "customer_id", null: false
+    t.decimal "rating"
+    t.bigint "restaurant_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_ratings_on_customer_id"
+    t.index ["restaurant_id"], name: "index_ratings_on_restaurant_id"
+  end
+
   create_table "restaurants", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.text "description"
@@ -90,5 +100,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_08_053832) do
   add_foreign_key "order_items", "orders"
   add_foreign_key "orders", "restaurants"
   add_foreign_key "orders", "users", column: "customer_id"
+  add_foreign_key "ratings", "restaurants"
+  add_foreign_key "ratings", "users", column: "customer_id"
   add_foreign_key "restaurants", "users", column: "owner_id"
 end

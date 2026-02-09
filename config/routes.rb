@@ -31,6 +31,7 @@ end
   get "dashboard/:id/dishes", to: "dashboard#show"
   get "search", to: "dashboard#search"
   get "search_dish/:id", to: "dashboard#search_dish", as: :search_dish
+  post "rating/:id", to: "dashboard#rating", as: :rating
 end
 
 resource :cart, only: [ :show ] do
