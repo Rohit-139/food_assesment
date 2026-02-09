@@ -1,0 +1,24 @@
+<div>
+	<h1>Restaurant Dashboard </h1>
+	<%= form_with model: @restaurant, url: restaurants_path do |form| %>
+
+ 
+
+  <div align="center">
+    <%= form.label :name, " Restaurant Name" %> <br>
+    <%= form.text_field :name, required: true, autofocus: true, autocomplete: "given-name" %>
+  </div>
+ <br>
+
+  <div align="center">
+    <%= form.label :description, "description" %> <br>
+    <%= form.text_field :description, required: true, autocomplete: "description" %>
+  </div>
+<br>
+  
+<br>
+  <div align="center">
+    <%= form.submit "Create Restaurant" %>
+  </div>
+<% end %>
+</div>

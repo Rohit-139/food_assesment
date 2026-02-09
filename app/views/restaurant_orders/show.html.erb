@@ -1,0 +1,83 @@
+<div style="max-width:900px;margin:40px auto;
+            font-family:Arial, sans-serif;">
+
+  <h2 style="margin-bottom:10px;">
+    📦 Order #<%= @order.id %>
+  </h2>
+
+  <p><strong>Customer:</strong> <%= @order.customer.name %></p>
+  <p><strong>Total Amount:</strong> ₹ <%= @order.total_amount %></p>
+  <p><strong>Current Status:</strong>
+    <span style="padding:4px 10px;border-radius:4px;
+                 color:#fff;
+                 background:
+                   <%= @order.status == 'pending' ? '#f0ad4e' :
+                       @order.status == 'cancelled' ? '#dc3545' :
+                       '#28a745' %>;">
+      <%= @order.status.capitalize %>
+    </span>
+  </p>
+
+  <!-- STATUS UPDATE (disable if cancelled) -->
+  <% unless @order.status == "cancelled" %>
+    <h3 style="margin-top:20px;">Update Order Status</h3>
+
+    <%= form_with url: update_status_restaurant_order_path(@restaurant, @order),
+          method: :patch, local: true do %>
+
+      <select name="status"
+        style="padding:8px;border-radius:4px;
+               border:1px solid #ccc;">
+        <option value="accepted">Accepted</option>
+        <option value="preparing">Preparing</option>
+        <option value="delivered">Delivered</option>
+      </select>
+
+      <button type="submit"
+        style="margin-left:10px;
+               background:#28a745;color:#fff;
+               border:none;
+               padding:8px 14px;
+               border-radius:4px;
+               cursor:pointer;">
+        Update
+      </button>
+    <% end %>
+  <% else %>
+    <p style="color:#777;font-style:italic;margin-top:15px;">
+      This order was cancelled by the customer.
+    </p>
+  <% end %>
+
+  <h3 style="margin-top:30px;">🍽️ Ordered Items</h3>
+
+  <table style="width:100%;border-collapse:collapse;
+                background:#fff;
+                box-shadow:0 4px 12px rgba(0,0,0,0.08);">
+    <thead>
+      <tr>
+        <th style="padding:12px;background:#333;color:#fff;">Dish</th>
+        <th style="padding:12px;background:#333;color:#fff;">Qty</th>
+        <th style="padding:12px;background:#333;color:#fff;">Price</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @order.order_items.each do |item| %>
+        <tr style="background:#f9f9f9;">
+          <td style="padding:12px;"><%= item.dish.name %></td>
+          <td style="padding:12px;"><%= item.quantity %></td>
+          <td style="padding:12px;">₹ <%= item.price %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%= link_to "⬅ Back to Orders",
+        restaurant_orders_path(@restaurant),
+        style:"display:inline-block;margin-top:20px;
+               text-decoration:none;
+               background:#6c757d;color:#fff;
+               padding:8px 14px;border-radius:4px;" %>
+
+</div>

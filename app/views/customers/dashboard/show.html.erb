@@ -1,0 +1,49 @@
+<div style="max-width: 800px; margin: auto;">
+
+  <!-- Header -->
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <h1><%= @restaurant.name %></h1>
+
+    <%= link_to "← Back to Restaurants", customers_dashboard_path %>
+  </div>
+
+
+  <div style="text-align: right; margin-bottom: 20px;">
+  <%= link_to "Search dishes", customers_search_dish_path(@restaurant), class: "btn btn-primary" %>
+</div>
+
+  <p style="color: #555;">
+    <%= @restaurant.description %>
+  </p>
+
+  <hr>
+
+  <!-- Dishes List -->
+  <h2>Dishes</h2>
+
+  <% if @dishes.present? %>
+    <% @dishes.each do |dish| %>
+      <div style="border: 1px solid #ddd; padding: 12px; margin-bottom: 10px; border-radius: 6px;">
+        
+        <h3 style="margin-bottom: 5px;"><%= dish.name %></h3>
+
+        <p>Price: ₹<%= dish.price %></p>
+
+        <% if dish.description.present? %>
+          <p style="color: #666;"><%= dish.description %></p>
+        <% end %>
+
+      <% if dish_in_cart?(dish) %>
+     <button disabled>✅ Added</button>
+<% else %>
+  <%= button_to "Add to Cart",
+        add_cart_path(dish_id: dish.id, restaurant_id: @restaurant.id),
+        method: :post %>
+<% end %>
+      </div>
+    <% end %>
+  <% else %>
+    <p>No dishes available for this restaurant.</p>
+  <% end %>
+
+</div>

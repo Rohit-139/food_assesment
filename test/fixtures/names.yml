@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  description: MyText
+  rating: 9.99
+  owner: one
+
+two:
+  description: MyText
+  rating: 9.99
+  owner: two

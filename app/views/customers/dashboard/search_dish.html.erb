@@ -1,0 +1,34 @@
+<%= form_with(url: customers_search_dish_path, method: :get, local: true) do |form| %>
+  <div class="field">
+    <%= form.label :search, "Search restaurant" %>
+    <%= form.text_field :search, value: params[:search], placeholder: "Enter keywords..." %>
+  </div>
+  <%= form.submit "Search" %>
+<% end %>
+
+<h2>Dishes</h2>
+
+  <% if @dishes.present? %>
+    <% @dishes.each do |dish| %>
+      <div style="border: 1px solid #ddd; padding: 12px; margin-bottom: 10px; border-radius: 6px;">
+        
+        <h3 style="margin-bottom: 5px;"><%= dish.name %></h3>
+
+        <p>Price: ₹<%= dish.price %></p>
+
+        <% if dish.description.present? %>
+          <p style="color: #666;"><%= dish.description %></p>
+        <% end %>
+
+      <% if dish_in_cart?(dish) %>
+     <button disabled>✅ Added</button>
+<% else %>
+  <%= button_to "Add to Cart",
+        add_cart_path(dish_id: dish.id, restaurant_id: @restaurant.id),
+        method: :post %>
+<% end %>
+      </div>
+    <% end %>
+  <% else %>
+    <p>No dishes available for this restaurant.</p>
+  <% end %>

@@ -1,0 +1,53 @@
+<div style="max-width:1000px;margin:40px auto;background:#ffffff;
+            padding:25px;border-radius:8px;
+            box-shadow:0 4px 12px rgba(0,0,0,0.08);
+            font-family:Arial, sans-serif;">
+
+  <h2 style="margin-bottom:20px;">🛒 My Orders</h2>
+
+  <% if @orders.any? %>
+    <table style="width:100%;border-collapse:collapse;">
+      <thead>
+        <tr>
+          <th style="padding:12px;background:#222;color:#fff;text-align:left;">Order ID</th>
+          <th style="padding:12px;background:#222;color:#fff;text-align:left;">Restaurant</th>
+          <th style="padding:12px;background:#222;color:#fff;text-align:left;">Total</th>
+          <th style="padding:12px;background:#222;color:#fff;text-align:left;">Status</th>
+          <th style="padding:12px;background:#222;color:#fff;text-align:left;">Date</th>
+          <th style="padding:12px;background:#222;color:#fff;text-align:left;">Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @orders.each do |order| %>
+          <tr style="background:#f9f9f9;">
+            <td style="padding:12px;">#<%= order.id %></td>
+            <td style="padding:12px;"><%= order.restaurant.name %></td>
+            <td style="padding:12px;">₹ <%= order.total_amount %></td>
+            <td style="padding:12px;">
+              <span style="padding:4px 10px;border-radius:4px;
+                           color:#fff;font-size:14px;
+                           background:<%= order.status == 'pending' ? '#f0ad4e' : '#28a745' %>;">
+                <%= order.status.capitalize %>
+              </span>
+            </td>
+            <td style="padding:12px;"><%= order.created_at.strftime("%d %b %Y") %></td>
+            <td style="padding:12px;">
+              <%= link_to "View",
+                    order_path(order),
+                    style: "text-decoration:none;
+                            background:#007bff;color:#fff;
+                            padding:6px 12px;border-radius:4px;
+                            font-size:14px;" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <div style="padding:15px;background:#eef;border-radius:5px;">
+      No orders placed yet 😔
+    </div>
+  <% end %>
+
+</div>

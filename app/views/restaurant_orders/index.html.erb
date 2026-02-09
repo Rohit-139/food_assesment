@@ -1,0 +1,58 @@
+<div style="max-width:1100px;margin:40px auto;
+            background:#ffffff;padding:25px;
+            border-radius:8px;
+            box-shadow:0 4px 12px rgba(0,0,0,0.08);
+            font-family:Arial, sans-serif;">
+
+  <h2 style="margin-bottom:20px;">📋 Orders for <%= @restaurant.name %></h2>
+
+  <% if @orders.any? %>
+    <table style="width:100%;border-collapse:collapse;">
+      <thead>
+        <tr>
+          <th style="padding:12px;background:#222;color:#fff;">Order ID</th>
+          <th style="padding:12px;background:#222;color:#fff;">Customer</th>
+          <th style="padding:12px;background:#222;color:#fff;">Total</th>
+          <th style="padding:12px;background:#222;color:#fff;">Status</th>
+          <th style="padding:12px;background:#222;color:#fff;">Placed At</th>
+          <th style="padding:12px;background:#222;color:#fff;">Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @orders.each do |order| %>
+          <tr style="background:#f9f9f9;">
+            <td style="padding:12px;">#<%= order.id %></td>
+            <td style="padding:12px;"><%= order.customer.name %></td>
+            <td style="padding:12px;">₹ <%= order.total_amount %></td>
+            <td style="padding:12px;">
+              <span style="padding:4px 10px;border-radius:4px;
+                           color:#fff;font-size:14px;
+                           background:
+                             <%= order.status == 'pending' ? '#f0ad4e' :
+                                 order.status == 'cancelled' ? '#dc3545' :
+                                 '#28a745' %>;">
+                <%= order.status.capitalize %>
+              </span>
+            </td>
+            <td style="padding:12px;">
+              <%= order.created_at.strftime("%d %b %Y, %I:%M %p") %>
+            </td>
+            <td style="padding:12px;">
+              <%= link_to "View",
+                    restaurant_order_path(@restaurant, order),
+                    style:"text-decoration:none;
+                           background:#007bff;
+                           color:#fff;
+                           padding:6px 12px;
+                           border-radius:4px;" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>No orders received yet 😴</p>
+  <% end %>
+
+</div>

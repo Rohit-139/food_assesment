@@ -1,0 +1,35 @@
+<%= form_with(url: customers_search_path, method: :get, local: true) do |form| %>
+  <div class="field">
+    <%= form.label :search, "Search restaurant" %>
+    <%= form.text_field :search, value: params[:search], placeholder: "Enter keywords..." %>
+  </div>
+  <%= form.submit "Search" %>
+<% end %>
+
+<h2>All Restaurants</h2>
+
+  <% if @restaurants.present? %>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px;">
+
+      <% @restaurants.each do |restaurant| %>
+        <div style="border: 1px solid #ccc; padding: 15px; border-radius: 8px;">
+          
+          <h3><%= restaurant.name %></h3>
+
+          <p style="color: #555;">
+            <%= truncate(restaurant.description, length: 100) %>
+          </p>
+
+            <p>⭐ Rating: <%= restaurant.rating %>/5</p>
+
+          <%= link_to "View Dishes",
+                customers_path(restaurant),
+                style: "display: inline-block; margin-top: 10px;" %>
+        </div>
+      <% end %>
+
+    </div>
+  <% else %>
+    <p>No restaurants available at the moment.</p>
+  <% end %>
+

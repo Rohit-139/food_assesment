@@ -1,0 +1,61 @@
+<h1>🛒 My Cart</h1>
+
+<% if @cart_items.present? %>
+  <table border="1" cellpadding="10" cellspacing="0">
+    <tr>
+      <th>Dish</th>
+      <th>Price</th>
+      <th>Quantity</th>
+      <th>Total</th>
+      <th>Action</th>
+    </tr>
+
+    <% grand_total = 0 %>
+
+    <% @cart_items.each do |item| %>
+      <% total = item.dish.price * item.quantity %>
+      <% grand_total += total %>
+
+      <tr>
+        <td><%= item.dish.name %></td>
+        <td>₹ <%= item.dish.price %></td>
+       <td>
+  <%= button_to "-", 
+        decrease_cart_path(item), 
+        method: :patch, 
+        form: { style: "display:inline" } %>
+
+  <strong><%= item.quantity %></strong>
+
+  <%= button_to "+", 
+        increase_cart_path(item), 
+        method: :patch, 
+        form: { style: "display:inline" } %>
+</td>
+
+        <td>₹ <%= total %></td>
+        <td>
+          <%= button_to "Remove",
+               remove_cart_path(item.id),
+                method: :delete,
+                data: { turbo_confirm: "Remove this item?" } %>
+        </td>
+      </tr>
+    <% end %>
+
+    <tr>
+      <td colspan="3"><strong>Grand Total</strong></td>
+      <td colspan="2"><strong>₹ <%= grand_total %></strong></td>
+    </tr>
+  </table>
+
+  <br>
+
+  <%= button_to "Place Order",
+         orders_path, 
+         method: :post  %> 
+
+<% else %>
+  <h3>Your cart is empty 😕</h3>
+  <%= link_to "Browse Restaurants", customers_dashboard_path %>
+<% end %>

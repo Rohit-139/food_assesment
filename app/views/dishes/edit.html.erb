@@ -1,0 +1,31 @@
+<div>
+	<h1>Edit the Dish </h1>
+	<%= form_with model: @dish, url: restaurant_dish_path do |form| %>
+
+ 
+
+  <div align="center">
+    <%= form.label :name, "Dish Name" %> <br>
+    <%= form.text_field :name, required: true, autofocus: true, autocomplete: "given-name" %>
+  </div>
+ <br>
+
+  <div align="center">
+    <%= form.label :description, "description" %> <br>
+    <%= form.text_field :description, required: true, autocomplete: "description" %>
+  </div>
+<br>
+
+
+  <div align="center">
+    <%= form.label :description, "price" %> <br>
+    <%= form.text_field :price, required: true, autocomplete: "price" %>
+  </div>
+<br>
+  
+<br>
+  <div align="center">
+    <%= form.submit "Add Dish" %>
+  </div>
+<% end %>
+</div>

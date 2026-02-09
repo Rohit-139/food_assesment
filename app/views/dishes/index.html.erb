@@ -1,0 +1,30 @@
+<div> 
+	<h1>All Dishes of <%= @restaurant.name %></h1>
+	<h4> <%= link_to 'click here to search dish', search_restaurant_dishes_path %> </h4>
+	<% if @dishes.present? %>
+	<table border="5px" cellpadding="5px" cellspacing="5px">
+		<th>Name</th>
+		<th>Description</th>
+		<th>Price</th>
+		<th>Edit</th>
+		<th>Details</th>
+		<th>Delete</th>
+	<% @dishes.each do |dish| %>
+	    <tr>
+		 <td><h4><%= dish.name %></h4></td>
+		 <td><h4><%= dish.description %></h4></td>
+		 <td><h4><%= dish.price %></h4></td>
+		 <td><h4><%= link_to 'Edit', edit_restaurant_dish_path(@restaurant,dish) %></h4></td>
+		 <td><h4><%= link_to 'Detail', restaurant_dish_path(@restaurant,dish) %></h4></td>
+		  <td><h4><%= button_to "Delete", restaurant_dish_path(@restaurant,dish), method: :delete, data: { turbo_confirm: "Are you sure?" } %></h4>
+</td>
+
+		</tr>
+	
+	<% end %>
+
+</table>
+<% else %>
+<h3>There is no dish in restaurant </h3>
+<% end %>
+</div>
