@@ -45,6 +45,8 @@ gem "image_processing", "~> 1.2"
 
 gem "byebug"
 
+
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -69,3 +71,13 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem "activeadmin", "~> 3.4"
+
+gem "devise", "~> 4.0"
+
+gem "cssbundling-rails", "= 1.4.1"
+
+gem "tailwindcss-ruby", "~> 3.4.17"
+
+gem "dartsass-rails", "~> 0.5.1"

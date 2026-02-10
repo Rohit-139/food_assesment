@@ -72,3 +72,4 @@
 # puts "✅ Dishes created"
 
 # puts "🎉 Seeding completed successfully!"
+AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?

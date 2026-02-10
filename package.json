@@ -1,0 +1,7 @@
+{
+  "name": "app",
+  "private": "true",
+  "dependencies": {
+    "yarn": "^1.22.22"
+  }
+}
