@@ -1,4 +1,5 @@
 class Customers::DashboardController < ApplicationController
+  before_action :require_customer
   def index
     @restaurants = Restaurant.all
   end
