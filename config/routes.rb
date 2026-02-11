@@ -7,9 +7,9 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
 
   get "/home", to: "signup#index"
-  get "/home/owner", to: "signup#new_owner"
-  get "/home/customer", to: "signup#new_customer"
-  post "/home", to: "signup#create"
+  get "/new", to: "signup#new"
+  post "/create", to: "signup#create"
+
 
   get "/login",  to: "sessions#new"
  post   "/login",  to: "sessions#create"
