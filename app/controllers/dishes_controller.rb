@@ -1,4 +1,7 @@
 class DishesController < ApplicationController
+  before_action :require_owner
+  before_action :set_dish, only: %i[edit update show destroy]
+
   def index
     @restaurant = Restaurant.find(params[:restaurant_id])
     @dishes = @restaurant.dishes
@@ -20,21 +23,18 @@ class DishesController < ApplicationController
   end
 
   def edit
-    @dish = Dish.find(params[:id])
   end
 
   def update
-    @dish = Dish.find(params[:id])
     @dish.update(dish_params)
     redirect_to restaurant_dishes_path(params[:restaurant_id])
   end
 
   def show
-    @dish = Dish.find(params[:id])
   end
 
   def destroy
-    @dish = Dish.find(params[:id])
+   
     @dish.destroy
     redirect_to restaurant_dishes_path(params[:restaurant_id])
   end
@@ -44,7 +44,8 @@ class DishesController < ApplicationController
     if params[:search].present?
       @restaurant = Restaurant.find(params[:restaurant_id])
       @dishes = @restaurant.dishes.where("name Ilike ? or description Ilike ?", "%#{search}%", "%#{search}%")
-    else @dishes = []
+    else 
+      @dishes = []
     end
   end
   private
@@ -52,4 +53,9 @@ class DishesController < ApplicationController
   def dish_params
     params.require(:dish).permit(:name, :description, :price)
   end
+
+  def set_dish
+    @dish = Dish.find(params[:id])
+  end
+
 end

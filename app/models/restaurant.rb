@@ -1,6 +1,7 @@
 class Restaurant < ApplicationRecord
   has_many :dishes, dependent: :destroy
   has_many :orders, dependent: :destroy
+  has_many :ratings, dependent: :destroy
   belongs_to :owner, class_name: "User", foreign_key: "owner_id"
   validates :name, :description,  presence: true
   validates :name, length: { minimum: 3, maximum: 20 }

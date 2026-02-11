@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
 
   # Changes to the importmap will invalidate the etag for HTML responses
   stale_when_importmap_changes
-
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   before_action :authenticate_user
   attr_accessor :current_user
   helper_method :current_user
@@ -31,4 +31,13 @@ class ApplicationController < ActionController::Base
       redirect_to root_path, alert: "Access denied"
     end
   end
+
+  def record_not_found
+    respond_to do |format|
+      format.html { render file: "#{Rails.root}/public/404.html", layout: false, status: :not_found }
+      format.json { render json: { error: "Record not found" }, status: :not_found }
+    
+    end
+  end
+
 end

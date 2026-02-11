@@ -10,6 +10,7 @@ class User < ApplicationRecord
 	validates :email, uniqueness: true , format: { with: URI::MailTo::EMAIL_REGEXP, message: "must be a valid email address" }
 
 	private
+
   def create_customer_cart
   	if self.type = "Customer"
   		@customer = User.find(self.id)
