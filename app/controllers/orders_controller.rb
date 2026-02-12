@@ -1,6 +1,7 @@
 class OrdersController < ApplicationController
   before_action :require_customer
   def create
+
    cart = current_user.cart
    cart_items = cart.cart_items
 
@@ -21,10 +22,13 @@ class OrdersController < ApplicationController
       )
       total += item.quantity * item.dish.price
     end
-    order.update(total_amount: total)
-    cart_items.destroy_all
+    delivery_charge = calculate_distance_price(params[:longitude],params[:latitude])
 
+    order.update(total_amount: total+delivery_charge)
+    cart_items.destroy_all
+  
     redirect_to order_path(order), notice: "Order placed successfully 🎉"
+
   end
 
   def show
@@ -44,6 +48,22 @@ class OrdersController < ApplicationController
       redirect_to order_path(order), notice: "Order cancelled successfully ❌"
     else
       redirect_to order_path(order), alert: "You cannot cancel this order"
+    end
+  end
+
+  private 
+
+  def calculate_distance_price(longitude,latitude)
+
+    delivery_charge = 0
+     @restaurant = current_user.cart.cart_items.first.dish.restaurant
+     distance = @restaurant.distance_to([latitude, longitude])
+
+     if distance > 5
+      delivery_charge = (distance-5)*10
+      return delivery_charge
+    else
+      return delivery_charge
     end
   end
 end
