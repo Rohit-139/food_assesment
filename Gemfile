@@ -81,3 +81,5 @@ gem "cssbundling-rails", "= 1.4.1"
 gem "tailwindcss-ruby", "~> 3.4.17"
 
 gem "dartsass-rails", "~> 0.5.1"
+
+gem "geocoder", "~> 1.8"
