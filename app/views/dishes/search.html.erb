@@ -1,3 +1,8 @@
+<br>
+<%= link_to "← Back to Restauarant", restaurants_path %>
+<br><br>
+
+
 <%= form_with(url: search_restaurant_dishes_path, method: :get, local: true) do |form| %>
   <div class="field">
     <%= form.label :search, "Search Dish" %>

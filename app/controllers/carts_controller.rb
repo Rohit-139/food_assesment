@@ -19,9 +19,15 @@ class CartsController < ApplicationController
 
  def increase
   item = CartItem.find(params[:id])
-  item.quantity += 1
-  item.save
+  if item.dish.stock > item.quantity
+    item.quantity += 1
+    item.save
     redirect_to cart_path
+  else
+    @cart_items = current_user.cart.cart_items
+    flash.now[:alert] = "This item has only #{item.quantity} Stock right now"
+    render :show, status: :unprocessable_entity
+  end
  end
 
  def decrease

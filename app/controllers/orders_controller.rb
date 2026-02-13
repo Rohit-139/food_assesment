@@ -14,20 +14,34 @@ class OrdersController < ApplicationController
               total_amount: 0)
     total = 0
 
+  #Implement lock for deadlock condition  and mantain the integrity 
+
+  ActiveRecord::Base.transaction do 
+    begin
     cart_items.each do |item|
+      dish = Dish.lock("FOR UPDATE").find(item.dish.id)
       order.order_items.create!(
-        dish: item.dish,
+        dish: dish,
         quantity: item.quantity,
-        price: item.dish.price
+        price: dish.price
       )
-      total += item.quantity * item.dish.price
+      total += item.quantity * dish.price
     end
     delivery_charge = calculate_distance_price(params[:longitude],params[:latitude])
 
-    order.update(total_amount: total+delivery_charge)
-    cart_items.destroy_all
-  
-    redirect_to order_path(order), notice: "Order placed successfully 🎉"
+    if order.update(total_amount: total+delivery_charge)
+      remove_stock(cart_items)
+      cart_items.destroy_all
+      render json: {location: order_path(order)}, status: :created
+    else
+      render json: {erors: order.errors.full_messages}, status: :unprocessable_entity
+    end
+
+    rescue ActiveRecord::LockWaitTimeout => e
+      flash[:alert] = "Could not acquire lock to order the dish. Please try again."
+    end
+
+  end
 
   end
 
@@ -64,6 +78,14 @@ class OrdersController < ApplicationController
       return delivery_charge
     else
       return delivery_charge
+    end
+  end
+
+  def remove_stock(cart_items)
+    cart_items.each do |item|
+      @dish = item.dish
+      @dish.stock -= item.quantity
+      @dish.save
     end
   end
 end

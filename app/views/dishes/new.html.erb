@@ -1,3 +1,8 @@
+<br>
+<%= link_to "← Back to Restauarant", restaurants_path %>
+<br><br>
+
+
 <div>
 	<h1>Add Dish </h1>
 	<%= form_with model: @dish, url: restaurant_dishes_path() do |form| %>
@@ -23,6 +28,13 @@
   </div>
 <br>
   
+
+  <div align="center">
+    <%= form.label :stock, "Stock" %> <br>
+    <%= form.text_field :stock, required: true, autocomplete: "stock" %>
+  </div>
+<br>
+   
 <br>
   <div align="center">
     <%= form.submit "Add Dish" %>

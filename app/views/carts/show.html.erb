@@ -1,5 +1,6 @@
+<%= link_to "← Back to Restaurants", customers_dashboard_path %>
+<br><br>
 <h1>🛒 My Cart</h1>
-
 <% if @cart_items.present? %>
   <table border="1" cellpadding="10" cellspacing="0">
     <tr>
@@ -54,13 +55,12 @@
   
   </div>
 
-  <%# button_to "Place Order",
-         orders_path, 
-         method: :post  %> 
 
   <div data-controller="geolocation">
     <button data-action ="click->geolocation#search">Order</button>
-  </div>       
+  </div>    
+
+  
 
 <% else %>
   <h3>Your cart is empty 😕</h3>

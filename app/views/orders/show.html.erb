@@ -1,3 +1,7 @@
+<br>
+<%= link_to "← Back to Orders", orders_path %>
+<br><br>
+
 <div style="max-width:900px;margin:40px auto;
             font-family:Arial, sans-serif;">
 
@@ -51,6 +55,16 @@
       <% end %>
     </tbody>
   </table>
+
+  <% delivery_charge = 0 %>
+  <% @order_items.each do |item| %>
+  <% delivery_charge += item.price* item.quantity %>
+  <% end %>
+
+    <div style="text-align:right;margin-top:15px;
+              font-size:18px;">
+    <strong>Delivery Charge: ₹ <%= @order.total_amount - delivery_charge %></strong>
+  </div>
 
   <div style="text-align:right;margin-top:15px;
               font-size:18px;">
