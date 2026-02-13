@@ -1,7 +1,13 @@
+<br>
+<%= link_to "← Back to Restauarant", restaurant_dishes_path(@dish.restaurant) %>
+<br><br>
+
+
 <div>
 	<h1>Dish details </h1>
 	<h3> Name : <%= @dish.name %></h3>
 	<h3> description : <%= @dish.description %></h3>
-	<h3> Rating : <%= @dish.price %></h3>
+	<h3> Price : <%= @dish.price %></h3>
+	<h3> Stock : <%= @dish.stock %></h3>
 	
 </div>

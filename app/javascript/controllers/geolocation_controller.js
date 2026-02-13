@@ -7,6 +7,7 @@ import { Controller } from "@hotwired/stimulus"
 };
 
 export default class extends Controller {
+   static targets = ["error"]
   connect() {
     console.log("stimulus")
   }
@@ -53,6 +54,7 @@ navigator.geolocation.getCurrentPosition(
       if (response.ok) {
         const result = await response.json();
         console.log("Location sent successfully, response:", result);
+        window.location.href = "/orders"
         
       } else {
         console.error("Error sending location:", response.statusText);

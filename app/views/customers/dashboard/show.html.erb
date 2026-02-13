@@ -29,16 +29,25 @@
 
         <p>Price: ₹<%= dish.price %></p>
 
-        <% if dish.description.present? %>
           <p style="color: #666;"><%= dish.description %></p>
-        <% end %>
+          <% if dish.stock > 0 %>
+          <h4 style="margin-bottom: 5px;">Stock : <%= dish.stock %></h4>
+          <% else %>
+          <h4 style="margin-bottom: 5px">Out of Stock</h4>
+          <% end%>
+
+
 
       <% if dish_in_cart?(dish) %>
      <button disabled>✅ Added</button>
 <% else %>
+   <% if dish.stock == 0 %>
+   <h3>Wait until new stock come </h3>
+   <% else %>
   <%= button_to "Add to Cart",
         add_cart_path(dish_id: dish.id, restaurant_id: @restaurant.id),
         method: :post %>
+        <% end %>
 <% end %>
       </div>
     <% end %>

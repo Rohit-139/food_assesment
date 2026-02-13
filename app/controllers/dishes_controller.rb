@@ -26,8 +26,12 @@ class DishesController < ApplicationController
   end
 
   def update
-    @dish.update(dish_params)
-    redirect_to restaurant_dishes_path(params[:restaurant_id])
+    if @dish.update(dish_params)
+      redirect_to restaurant_dishes_path(params[:restaurant_id])
+    else
+      flash.now[:alert] = @dish.errors.full_messages.to_sentence
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   def show
@@ -51,7 +55,7 @@ class DishesController < ApplicationController
   private
 
   def dish_params
-    params.require(:dish).permit(:name, :description, :price)
+    params.require(:dish).permit(:name, :description, :price, :stock)
   end
 
   def set_dish
