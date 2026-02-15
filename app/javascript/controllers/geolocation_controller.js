@@ -42,7 +42,7 @@ navigator.geolocation.getCurrentPosition(
     try {
       const csrfToken = document.querySelector("meta[name='csrf-token']").content;
       
-      const response = await fetch("/orders", { 
+      const response = await fetch("/orders/preview", { 
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -54,7 +54,7 @@ navigator.geolocation.getCurrentPosition(
       if (response.ok) {
         const result = await response.json();
         console.log("Location sent successfully, response:", result);
-        window.location.href = "/orders"
+        window.location.href = result.redirect_url
         
       } else {
         console.error("Error sending location:", response.statusText);

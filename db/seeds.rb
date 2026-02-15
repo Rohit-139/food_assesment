@@ -1,75 +1,132 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
-#
-# puts "🌱 Seeding data..."
 
-# =========================
-# # OWNER USER
-# # =========================
-# owner = User.create!(
-#   name: "Rahul Sharma",
-#   email: "owner@gmail.com",
-#   password: "password",
-#   role: "owner"
-# )
+puts "Deleting old data..."
 
-# puts "✅ Owner created"
+Dish.destroy_all
+Restaurant.destroy_all
+User.destroy_all
 
-# # =========================
-# # RESTAURANT
-# # =========================
-# restaurant = Restaurant.create!(
-#   name: "Spicy Treat",
-#   description: "Best Indian & Chinese food in town",
-#   rating: 4.5,
-#   user: owner
-# )
+puts "Creating Owners..."
 
-# puts "✅ Restaurant created"
+owner1 = Owner.create!(
+  name: "Rohit Owner",
+  email: "rohit.owner@gmail.com",
+  password: "password123",
+  password_confirmation: "password123",
+  type: "Owner"
+)
 
-# # =========================
-# # DISHES
-# # =========================
-# dishes = [
-#   {
-#     name: "Paneer Butter Masala",
-#     description: "Creamy paneer curry with butter & spices",
-#     price: 250
-#   },
-#   {
-#     name: "Chicken Biryani",
-#     description: "Hyderabadi style dum biryani",
-#     price: 320
-#   },
-#   {
-#     name: "Veg Hakka Noodles",
-#     description: "Chinese style noodles with veggies",
-#     price: 180
-#   },
-#   {
-#     name: "Butter Naan",
-#     description: "Soft naan topped with butter",
-#     price: 40
-#   },
-#   {
-#     name: "Masala Dosa",
-#     description: "Crispy dosa with potato filling",
-#     price: 120
-#   }
-# ]
+owner2 = Owner.create!(
+  name: "Amit Owner",
+  email: "amit.owner@gmail.com",
+  password: "password123",
+  password_confirmation: "password123",
+  type: "Owner"
+)
 
-# dishes.each do |dish|
-#   restaurant.dishes.create!(dish)
-# end
+owner3 = Owner.create!(
+  name: "Neha Owner",
+  email: "neha.owner@gmail.com",
+  password: "password123",
+  password_confirmation: "password123",
+  type: "Owner"
+)
 
-# puts "✅ Dishes created"
+puts "Owners created: #{Owner.count}"
 
-# puts "🎉 Seeding completed successfully!"
+puts "Creating Restaurants..."
+
+restaurant1 = owner1.restaurants.create!(
+  name: "Spicy Hub",
+  description: "Best spicy food in town",
+  rating: 4.5,
+  street: "Gita bhawan",
+  city: "Indore",
+  state: "Madhya Pradesh"
+)
+
+restaurant2 = owner1.restaurants.create!(
+  name: "Pizza Point",
+  description: "Delicious pizzas and sides",
+  rating: 4.2,
+  street: "Vijay Nagar",
+  city: "Indore",
+  state: "Madhya Pradesh"
+)
+
+restaurant3 = owner2.restaurants.create!(
+  name: "Burger House",
+  description: "Juicy burgers available",
+  rating: 4.0,
+  street: "shivaji vatika",
+  city: "indore",
+  state: "Madhya pradesh"
+)
+
+restaurant4 = owner2.restaurants.create!(
+  name: "South Express",
+  description: "Authentic south indian food",
+  rating: 4.6,
+  street: "bada ganpati",
+  city: "indore",
+  state: "Madhya pradesh"
+)
+
+restaurant5 = owner3.restaurants.create!(
+  name: "Chinese Corner",
+  description: "Chinese and fast food",
+  rating: 4.3,
+  street: "Khajrana",
+  city: "Indore",
+  state: "Madhya pradesh"
+)
+
+restaurant6 = owner3.restaurants.create!(
+  name: "Food Paradise",
+  description: "Multi cuisine restaurant",
+  rating: 4.7,
+  street: "robot square",
+  city: "Indore",
+  state: "Madhya pradesh"
+)
+
+puts "Restaurants created: #{Restaurant.count}"
+
+puts "Creating Dishes..."
+
+restaurants = Restaurant.all
+
+restaurants.each do |restaurant|
+  restaurant.dishes.create!(
+    name: "Paneer Butter Masala",
+    description: "Creamy paneer curry",
+    price: 250,
+    stock: 20
+  )
+
+  restaurant.dishes.create!(
+    name: "Veg Biryani",
+    description: "Delicious veg biryani",
+    price: 180,
+    stock: 15
+  )
+
+  restaurant.dishes.create!(
+    name: "Masala Dosa",
+    description: "Crispy dosa with potato filling",
+    price: 120,
+    stock: 25
+  )
+
+  restaurant.dishes.create!(
+    name: "Veg Noodles",
+    description: "Chinese style noodles",
+    price: 150,
+    stock: 18
+  )
+end
+
+puts "Dishes created: #{Dish.count}"
+
+puts "Seeding completed successfully!"
+
 AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?

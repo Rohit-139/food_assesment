@@ -1,23 +1,50 @@
 class OrdersController < ApplicationController
   before_action :require_customer
-  def create
 
-   cart = current_user.cart
-   cart_items = cart.cart_items
+  def preview
+  cart = current_user.cart
+  cart_items = cart.cart_items
 
-   return redirect_to cart_path, alert: "Cart is empty" if cart_items.empty?
+  return render json: { error: "Cart empty" }, status: 422 if cart_items.empty?
 
-   restaurant = cart_items.first.dish.restaurant
-   order = current_user.orders.create!(
-              restaurant: restaurant,
-              status: "pending",
-              total_amount: 0)
-    total = 0
+  restaurant = cart_items.first.dish.restaurant
 
-  #Implement lock for deadlock condition  and mantain the integrity 
+  items_total = 0
+  cart_items.each do |item|
+    items_total += item.quantity * item.dish.price
+  end
 
-  ActiveRecord::Base.transaction do 
-    begin
+  delivery_charge = calculate_distance_price(params[:longitude], params[:latitude])
+  grand_total = items_total + delivery_charge
+
+  # session me temporary store
+  session[:order_preview] = {
+    latitude: params[:latitude],
+    longitude: params[:longitude],
+    delivery_charge: delivery_charge,
+    total_amount: grand_total
+  }
+
+  render json: { redirect_url: "/orders/preview_page" }
+end
+
+def confirm
+  data = session[:order_preview]
+  return redirect_to cart_path, alert: "Session expired" unless data
+
+  cart = current_user.cart
+  cart_items = cart.cart_items
+  restaurant = cart_items.first.dish.restaurant
+
+  order = current_user.orders.create!(
+    restaurant: restaurant,
+    status: "pending",
+    total_amount: 0
+  )
+
+  total = 0
+
+  ActiveRecord::Base.transaction do
     cart_items.each do |item|
       dish = Dish.lock("FOR UPDATE").find(item.dish.id)
       order.order_items.create!(
@@ -27,23 +54,21 @@ class OrdersController < ApplicationController
       )
       total += item.quantity * dish.price
     end
-    delivery_charge = calculate_distance_price(params[:longitude],params[:latitude])
 
-    if order.update(total_amount: total+delivery_charge)
-      remove_stock(cart_items)
-      cart_items.destroy_all
-      render json: {location: order_path(order)}, status: :created
-    else
-      render json: {erors: order.errors.full_messages}, status: :unprocessable_entity
-    end
-
-    rescue ActiveRecord::LockWaitTimeout => e
-      flash[:alert] = "Could not acquire lock to order the dish. Please try again."
-    end
-
+    order.update!(total_amount: data["total_amount"])
+    remove_stock(cart_items)
+    cart_items.destroy_all
   end
 
-  end
+  session.delete(:order_preview)
+  redirect_to order_path(order), notice: "Order placed successfully 🎉"
+end
+
+  def preview_page
+  @data = session[:order_preview]
+  redirect_to cart_path, alert: "Session expired" unless @data
+end
+
 
   def show
     @order = Order.find(params[:id])
@@ -65,20 +90,19 @@ class OrdersController < ApplicationController
     end
   end
 
-  private 
+  private
 
-  def calculate_distance_price(longitude,latitude)
-
+  def calculate_distance_price(longitude, latitude)
     delivery_charge = 0
      @restaurant = current_user.cart.cart_items.first.dish.restaurant
-     distance = @restaurant.distance_to([latitude, longitude])
+     distance = @restaurant.distance_to([ latitude, longitude ])
 
      if distance > 5
       delivery_charge = (distance-5)*10
-      return delivery_charge
-    else
-      return delivery_charge
-    end
+      delivery_charge
+     else
+      delivery_charge
+     end
   end
 
   def remove_stock(cart_items)

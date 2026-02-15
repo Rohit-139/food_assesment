@@ -1,0 +1,99 @@
+<% total = session[:order_preview]["total_amount"].to_f %>
+<% delivery = session[:order_preview]["delivery_charge"].to_f %>
+<% items_total = total - delivery %>
+
+<div style="font-family:Arial, Helvetica, sans-serif;background:#f6f6f6;min-height:100vh;padding:30px;">
+
+  <h1 style="margin-bottom:25px;">Checkout</h1>
+
+  <div style="display:flex;gap:30px;align-items:flex-start;">
+
+    <!-- LEFT SIDE -->
+    <div style="flex:2;background:white;padding:25px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.08);">
+
+      <h2>🧾 Order Details</h2>
+      <hr style="margin:15px 0;">
+
+      <div style="display:flex;justify-content:space-between;margin:12px 0;font-size:18px;">
+        <span>Items Total</span>
+        <span>₹ <%= items_total.round %></span>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;margin:12px 0;font-size:18px;">
+        <span>Delivery Charge</span>
+        <span style="color:#ff7a00;font-weight:bold;">₹ <%= delivery.round %></span>
+      </div>
+
+      <div style="margin-top:25px;color:#666;">
+        <p>📍 Delivery will be calculated based on your current location.</p>
+        <p>⏱ Estimated delivery: 30-45 minutes</p>
+      </div>
+
+    </div>
+
+    <!-- RIGHT SIDE (STICKY PAYMENT BOX) -->
+    <div style="
+      flex:1;
+      background:white;
+      padding:25px;
+      border-radius:12px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.08);
+      position:sticky;
+      top:20px;
+    ">
+
+      <h2>💳 Payment Summary</h2>
+      <hr style="margin:15px 0;">
+
+      <div style="display:flex;justify-content:space-between;margin:12px 0;">
+        <span>Subtotal</span>
+        <span>₹ <%= items_total.round %></span>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;margin:12px 0;">
+        <span>Delivery Fee</span>
+        <span>₹ <%= delivery.round %></span>
+      </div>
+
+      <hr style="margin:20px 0;">
+
+      <div style="display:flex;justify-content:space-between;font-size:22px;font-weight:bold;">
+        <span>Total Pay</span>
+        <span>₹ <%= total.round %></span>
+      </div>
+
+      <div style="margin-top:25px;display:flex;flex-direction:column;gap:12px;">
+
+        <%= button_to "Place Order",
+          confirm_orders_path,
+          method: :post,
+          data: { turbo: false },
+          style: "
+            background:#00b14f;
+            color:white;
+            border:none;
+            padding:16px;
+            font-size:18px;
+            border-radius:10px;
+            cursor:pointer;
+            width:100%;
+          " %>
+
+        <%= link_to "Back to Cart",
+          cart_path,
+          style: "
+            text-align:center;
+            padding:12px;
+            background:#eee;
+            border-radius:10px;
+            text-decoration:none;
+            color:#333;
+            display:block;
+          " %>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>

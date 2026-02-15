@@ -1,6 +1,9 @@
 {
   "name": "app",
-  "private": "true",
+  "private": true,
+  "scripts": {
+    "build:css": "echo \"No CSS build step configured\""
+  },
   "dependencies": {
     "yarn": "^1.22.22"
   }

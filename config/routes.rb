@@ -43,14 +43,20 @@ resource :cart, only: [ :show ] do
   delete "remove/:item_id", to: "carts#remove", as: :remove
 end
 
-resources :orders, only: [ :create, :index, :show ] do
+resources :orders, only: [  :index, :show ] do
+ collection do
+    post :preview
+    post :confirm
+    get :preview_page
+  end
+
  member do
     patch :cancel
   end
 end
 
 
-match '*unmatched_route', to: redirect('/'), via: :all
+match "*unmatched_route", to: redirect("/"), via: :all
 
 
  root "signup#index"
