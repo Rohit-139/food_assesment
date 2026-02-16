@@ -14,10 +14,10 @@ class OrdersController < ApplicationController
     items_total += item.quantity * item.dish.price
   end
 
-  delivery_charge = calculate_distance_price(params[:longitude], params[:latitude])
+  delivery_charge = calculate_distance_price(params[:latitude], params[:longitude])
   grand_total = items_total + delivery_charge
 
-  # session me temporary store
+ 
   session[:order_preview] = {
     latitude: params[:latitude],
     longitude: params[:longitude],
@@ -42,26 +42,32 @@ def confirm
     total_amount: 0
   )
 
-  total = 0
 
   ActiveRecord::Base.transaction do
     cart_items.each do |item|
       dish = Dish.lock("FOR UPDATE").find(item.dish.id)
-      order.order_items.create!(
-        dish: dish,
-        quantity: item.quantity,
-        price: dish.price
-      )
-      total += item.quantity * dish.price
+      if item.quantity <= item.dish.stock
+        order.order_items.create!(
+          dish: dish,
+          quantity: item.quantity,
+          price: dish.price
+        )
+      else
+        flash.now[:notice]= "The stock is less than item quantity please wait sometime for stock fulfilling"
+        render :preview_page, status: :unprocessable_entity and return  
+      end
     end
 
     order.update!(total_amount: data["total_amount"])
     remove_stock(cart_items)
+    WelcomeMailMailer.with(order: order, total: data["total_amount"]).order_recipt.deliver_later
     cart_items.destroy_all
   end
 
   session.delete(:order_preview)
   redirect_to order_path(order), notice: "Order placed successfully 🎉"
+
+  
 end
 
   def preview_page
@@ -92,7 +98,8 @@ end
 
   private
 
-  def calculate_distance_price(longitude, latitude)
+  def calculate_distance_price(latitude, longitude)
+
     delivery_charge = 0
      @restaurant = current_user.cart.cart_items.first.dish.restaurant
      distance = @restaurant.distance_to([ latitude, longitude ])
