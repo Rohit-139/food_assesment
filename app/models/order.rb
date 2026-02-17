@@ -2,6 +2,7 @@ class Order < ApplicationRecord
   belongs_to :customer, class_name: "User", foreign_key: "customer_id"
   belongs_to :restaurant
   has_many :order_items, dependent: :destroy
+  has_many :messages, dependent: :destroy
 
     enum :status, {
     pending: 0,     # order placed, waiting for owner

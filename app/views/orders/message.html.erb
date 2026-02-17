@@ -1,0 +1,19 @@
+<h1 align="center">Message page</h1>
+<% @messages.each do |message| %>
+<% if message.user.type == "Customer" %>
+<h4> You : <%= message.content %> </h4>
+<% else %>
+<h4> Restaurant : <%= message.content%></h4>
+<% end %>
+<% end %>
+
+<%= form_with(url: message_save_order_path, scope: :orders, local: true) do |form| %>
+  <div  class="field">
+    <%= form.text_field :content, placeholder: "Enter your message" %>
+  </div> 
+
+
+  <div  class="actions">
+    <%= form.submit "send" %>
+  </div> 
+<% end %>

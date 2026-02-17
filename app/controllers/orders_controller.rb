@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  before_action :require_customer
+  before_action :require_customer, except: [ :message, :message_save ]
 
   def preview
   cart = current_user.cart
@@ -17,7 +17,7 @@ class OrdersController < ApplicationController
   delivery_charge = calculate_distance_price(params[:latitude], params[:longitude])
   grand_total = items_total + delivery_charge
 
- 
+
   session[:order_preview] = {
     latitude: params[:latitude],
     longitude: params[:longitude],
@@ -54,7 +54,7 @@ def confirm
         )
       else
         flash.now[:notice]= "The stock is less than item quantity please wait sometime for stock fulfilling"
-        render :preview_page, status: :unprocessable_entity and return  
+        render :preview_page, status: :unprocessable_entity and return
       end
     end
 
@@ -66,8 +66,6 @@ def confirm
 
   session.delete(:order_preview)
   redirect_to order_path(order), notice: "Order placed successfully 🎉"
-
-  
 end
 
   def preview_page
@@ -96,10 +94,27 @@ end
     end
   end
 
+  def message
+    @messages = Message.where(order_id: params[:id])
+  end
+
+  def message_save
+    @message = Message.new(message_params)
+    @message.order_id = params[:id]
+    @message.user_id = current_user.id
+    if @message.save
+      redirect_to message_order_path
+    else
+      render :message_order, status: :unprocessable_entity
+    end
+  end
+
   private
+  def message_params
+    params.require(:orders).permit(:content)
+  end
 
   def calculate_distance_price(latitude, longitude)
-
     delivery_charge = 0
      @restaurant = current_user.cart.cart_items.first.dish.restaurant
      distance = @restaurant.distance_to([ latitude, longitude ])

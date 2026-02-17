@@ -38,7 +38,6 @@ class DishesController < ApplicationController
   end
 
   def destroy
-   
     @dish.destroy
     redirect_to restaurant_dishes_path(params[:restaurant_id])
   end
@@ -48,7 +47,7 @@ class DishesController < ApplicationController
     if params[:search].present?
       @restaurant = Restaurant.find(params[:restaurant_id])
       @dishes = @restaurant.dishes.where("name Ilike ? or description Ilike ?", "%#{search}%", "%#{search}%")
-    else 
+    else
       @dishes = []
     end
   end
@@ -61,5 +60,4 @@ class DishesController < ApplicationController
   def set_dish
     @dish = Dish.find(params[:id])
   end
-
 end

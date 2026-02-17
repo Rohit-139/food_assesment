@@ -21,6 +21,8 @@
           <th style="padding:12px;background:#222;color:#fff;text-align:left;">Status</th>
           <th style="padding:12px;background:#222;color:#fff;text-align:left;">Date</th>
           <th style="padding:12px;background:#222;color:#fff;text-align:left;">Action</th>
+          <th style="padding:12px;background:#222;color:#fff;text-align:left;">Action</th>
+
         </tr>
       </thead>
 
@@ -41,6 +43,15 @@
             <td style="padding:12px;">
               <%= link_to "View",
                     order_path(order),
+                    style: "text-decoration:none;
+                            background:#007bff;color:#fff;
+                            padding:6px 12px;border-radius:4px;
+                            font-size:14px;" %>
+            </td>
+
+            <td style="padding:12px;">
+              <%= link_to "Message",
+                    message_order_path(order),
                     style: "text-decoration:none;
                             background:#007bff;color:#fff;
                             padding:6px 12px;border-radius:4px;
