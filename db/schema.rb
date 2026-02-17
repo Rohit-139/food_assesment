@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_13_043503) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_17_093341) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_catalog.plpgsql"
+
   create_table "active_admin_comments", force: :cascade do |t|
     t.bigint "author_id"
     t.string "author_type"
@@ -63,6 +66,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_13_043503) do
     t.integer "stock"
     t.datetime "updated_at", null: false
     t.index ["restaurant_id"], name: "index_dishes_on_restaurant_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.bigint "order_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["order_id"], name: "index_messages_on_order_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "order_items", force: :cascade do |t|
@@ -125,6 +138,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_13_043503) do
   add_foreign_key "cart_items", "dishes"
   add_foreign_key "carts", "users", column: "customer_id"
   add_foreign_key "dishes", "restaurants"
+  add_foreign_key "messages", "orders"
+  add_foreign_key "messages", "users"
   add_foreign_key "order_items", "dishes"
   add_foreign_key "order_items", "orders"
   add_foreign_key "orders", "restaurants"

@@ -52,6 +52,8 @@ resources :orders, only: [  :index, :show ] do
 
  member do
     patch :cancel
+    get "message", to: "orders#message", as: :message
+    post "message/save", to: "orders#message_save", as: :message_save
   end
 end
 

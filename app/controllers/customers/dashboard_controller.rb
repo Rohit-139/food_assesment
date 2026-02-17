@@ -13,11 +13,11 @@ class Customers::DashboardController < ApplicationController
     search = params[:search]
     if params[:search].present?
       @restaurants = Restaurant.where("name Ilike ? ", "%#{search}%")
-    else 
+    else
       @restaurants = []
     end
   end
-  
+
   def search_dish
     search = params[:search]
     if params[:search].present?
@@ -35,7 +35,7 @@ class Customers::DashboardController < ApplicationController
     update_rating_in_restaurant(params[:id])
   end
 
-  private 
+  private
 
   def update_rating_in_restaurant(id)
     average = Rating.where(restaurant_id: id).average(:rating)
@@ -43,6 +43,4 @@ class Customers::DashboardController < ApplicationController
     @restaurant.update(rating: average)
     redirect_to customers_dashboard_path
   end
-
-
 end

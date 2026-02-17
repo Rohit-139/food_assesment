@@ -3,6 +3,8 @@ class User < ApplicationRecord
 
   has_secure_password
 
+  has_many :messages, dependent: :destroy
+
   validates :name, :email, :type,  presence: true
   validates :name, length: { minimum: 3, maximum: 20 }
   validates :password, length: { minimum: 8, maximum: 15 }

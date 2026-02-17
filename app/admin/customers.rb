@@ -1,5 +1,4 @@
   ActiveAdmin.register Customer do
-
     # See permitted parameters documentation:
     # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
     #
@@ -15,7 +14,7 @@
       column :email
       column :created_at
       column :type
-      actions 
+      actions
     end
 
     controller do
@@ -28,7 +27,7 @@
 
 
 
-     
+
 
     form do |f|
       f.inputs "Customer details" do
@@ -38,7 +37,6 @@
         f.input :password_confirmation
 
         f.input :type, value: "Customer"
-
       end
       f.actions
     end

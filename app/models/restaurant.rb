@@ -20,18 +20,18 @@ class Restaurant < ApplicationRecord
     end
   end
 
-  before_validation :geocode , if: :address_changed?
+  before_validation :geocode, if: :address_changed?
   validate :found_address_presence
 
-  def address 
-    [street, city, state].compact.join(', ')
+  def address
+    [ street, city, state ].compact.join(", ")
   end
 
   def address_changed?
     street_changed? || city_changed? || state_changed?
   end
 
-  private 
+  private
 
   def found_address_presence
     if latitude.blank? || longitude.blank?

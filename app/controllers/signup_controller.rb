@@ -1,20 +1,20 @@
 class SignupController < ApplicationController
   def index
   end
-  
+
   def new
-    @user = User.new 
+    @user = User.new
   end
 
 
 
-  def create 
-    @user = User.new(user_params) 
+  def create
+    @user = User.new(user_params)
     type = params[:user][:type]
-    if 
-      type == "1" 
+    if
+      type == "1"
       @user.type = "Owner"
-    else 
+    else
       @user.type = "Customer"
     end
     if @user.save
@@ -31,7 +31,4 @@ class SignupController < ApplicationController
   def user_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation)
   end
-
-
-
 end
