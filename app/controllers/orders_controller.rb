@@ -60,7 +60,7 @@ def confirm
 
     order.update!(total_amount: data["total_amount"])
     remove_stock(cart_items)
-    WelcomeMailMailer.with(order: order, total: data["total_amount"]).order_recipt.deliver_later
+    # WelcomeMailMailer.with(order: order, total: data["total_amount"]).order_recipt.deliver_later
     cart_items.destroy_all
   end
 
