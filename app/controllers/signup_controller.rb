@@ -18,7 +18,7 @@ class SignupController < ApplicationController
       @user.type = "Customer"
     end
     if @user.save
-      WelcomeMailMailer.with(user: @user).welcome_user.deliver_now
+      # WelcomeMailMailer.with(user: @user).welcome_user.deliver_now
       redirect_to login_path, notice: "signup successfully"
     else
       flash.now[:alert] = @user.errors.full_messages.to_sentence
