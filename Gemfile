@@ -76,7 +76,7 @@ gem "activeadmin", "~> 3.4"
 
 gem "devise", "~> 4.0"
 
-gem "cssbundling-rails", "= 1.4.1"
+gem "cssbundling-rails", "1.4.3"
 
 gem "tailwindcss-ruby", "~> 3.4.17"
 
