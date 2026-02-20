@@ -11,16 +11,13 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[8.1].define(version: 2026_02_17_093341) do
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "pg_catalog.plpgsql"
-
   create_table "active_admin_comments", force: :cascade do |t|
-    t.bigint "author_id"
+    t.integer "author_id"
     t.string "author_type"
     t.text "body"
     t.datetime "created_at", null: false
     t.string "namespace"
-    t.bigint "resource_id"
+    t.integer "resource_id"
     t.string "resource_type"
     t.datetime "updated_at", null: false
     t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author"
@@ -41,9 +38,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_17_093341) do
   end
 
   create_table "cart_items", force: :cascade do |t|
-    t.bigint "cart_id", null: false
+    t.integer "cart_id", null: false
     t.datetime "created_at", null: false
-    t.bigint "dish_id", null: false
+    t.integer "dish_id", null: false
     t.integer "quantity"
     t.datetime "updated_at", null: false
     t.index ["cart_id"], name: "index_cart_items_on_cart_id"
@@ -52,7 +49,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_17_093341) do
 
   create_table "carts", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.bigint "customer_id", null: false
+    t.integer "customer_id", null: false
     t.datetime "updated_at", null: false
     t.index ["customer_id"], name: "index_carts_on_customer_id"
   end
@@ -62,7 +59,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_17_093341) do
     t.text "description"
     t.string "name"
     t.decimal "price"
-    t.bigint "restaurant_id", null: false
+    t.integer "restaurant_id", null: false
     t.integer "stock"
     t.datetime "updated_at", null: false
     t.index ["restaurant_id"], name: "index_dishes_on_restaurant_id"
@@ -71,17 +68,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_17_093341) do
   create_table "messages", force: :cascade do |t|
     t.text "content"
     t.datetime "created_at", null: false
-    t.bigint "order_id", null: false
+    t.integer "order_id", null: false
     t.datetime "updated_at", null: false
-    t.bigint "user_id", null: false
+    t.integer "user_id", null: false
     t.index ["order_id"], name: "index_messages_on_order_id"
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "order_items", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.bigint "dish_id", null: false
-    t.bigint "order_id", null: false
+    t.integer "dish_id", null: false
+    t.integer "order_id", null: false
     t.integer "price"
     t.integer "quantity"
     t.datetime "updated_at", null: false
@@ -91,8 +88,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_17_093341) do
 
   create_table "orders", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.bigint "customer_id", null: false
-    t.bigint "restaurant_id", null: false
+    t.integer "customer_id", null: false
+    t.integer "restaurant_id", null: false
     t.integer "status"
     t.integer "total_amount"
     t.datetime "updated_at", null: false
@@ -102,9 +99,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_17_093341) do
 
   create_table "ratings", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.bigint "customer_id", null: false
+    t.integer "customer_id", null: false
     t.decimal "rating"
-    t.bigint "restaurant_id", null: false
+    t.integer "restaurant_id", null: false
     t.datetime "updated_at", null: false
     t.index ["customer_id"], name: "index_ratings_on_customer_id"
     t.index ["restaurant_id"], name: "index_ratings_on_restaurant_id"
@@ -117,7 +114,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_17_093341) do
     t.float "latitude"
     t.float "longitude"
     t.string "name"
-    t.bigint "owner_id", null: false
+    t.integer "owner_id", null: false
     t.decimal "rating", precision: 3, scale: 2, default: "3.0"
     t.string "state"
     t.string "street"

@@ -60,6 +60,7 @@ end
 
 match "*unmatched_route", to: redirect("/"), via: :all
 
+mount ActionCable.server => "/cable"
 
  root "signup#index"
 

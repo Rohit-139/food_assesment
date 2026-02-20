@@ -101,3 +101,21 @@
                 padding:8px 14px;border-radius:4px;" %>
 
 </div>
+
+<div id="chat-box" style="height:300px;overflow:auto;border:1px solid #ccc"></div>
+
+<input id="chat-input" type="text">
+<button onclick="sendMessage()">Send</button>
+
+<script type="module">
+  import { createChat } from "channels/order_chat_channel"
+
+  const chat = createChat(<%= @order.id %>)
+
+  window.sendMessage = function() {
+    const input = document.getElementById("chat-input")
+    chat.send({ message: input.value })
+    input.value = ""
+  }
+</script>
+
