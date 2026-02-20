@@ -74,7 +74,7 @@ end
 
 gem "activeadmin", "~> 3.4"
 
-gem "devise", "~> 4.0"
+gem "devise", "~> 5.0"
 
 gem "cssbundling-rails", "= 1.4.1"
 
